@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package benchmark;
+
+message TreeNode {
+  int64 key = 1;
+  string value = 2;
+  TreeNode left = 3;
+  TreeNode right = 4;
+}
