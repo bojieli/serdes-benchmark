@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <chrono>
 #include "benchmark.h"
+#include "test_serdes.h"
+#include "baseline_serdes.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -57,15 +59,27 @@ bool ValidateSerdesResult(const TreeNode *root_a, const TreeNode *root_b)
         && ValidateSerdesResult(root_a->right, root_b->right);
 }
 
+void FreeTree(TreeNode *root)
+{
+    if (root->left) {
+        FreeTree(root->left);
+    }
+    if (root->right) {
+        FreeTree(root->right);
+    }
+    delete root;
+}
+
 double RunBenchmark(const TreeNode *root, uint32_t network_throughput,
     (void)(SerializeFunc *)(uint32_t network_throughput, const TreeNode *root, void **buf, uint32_t *serialize_size),
     (TreeNode *)(DeserializeFunc *)(uint32_t network_throughput, void *buf, uint32_t serialize_size),
+    (void)(FreeSerializeBufFunc *)(void *buf, uint32_t serialize_size),
     const char *test_name)
 {
     auto start = chrono::steady_clock::now();
 
     uint32_t serialize_size = 0;
-    void *buf = NULL;
+    void *serialize_buf = NULL;
     SerializeFunc(root, &buf, &serialize_size);
 
     auto middle = chrono::steady_clock::now();
@@ -83,6 +97,8 @@ double RunBenchmark(const TreeNode *root, uint32_t network_throughput,
         cerr << "Test failed: serialized data is not equivalent to deserialized data" << endl;
         exit(1);
     }
+    FreeSerializeBufFunc(buf, serialize_size);
+    FreeTree(new_root);
 
     cout << "Total " << test_name << " time is " << test_time << " us: "
          << "serialize " << serialize_time << " us, "
@@ -94,8 +110,8 @@ double RunBenchmark(const TreeNode *root, uint32_t network_throughput,
 
 double RunComparison(const TreeNode *root, uint32_t network_throughput)
 {
-    double test_time = RunBenchmark(root, network_throughput, TestSerialize, TestDeserialize, "test");
-    double baseline_time = RunBenchmark(root, network_throughput, BaselineSerialize, BaselineDeserialize, "baseline");
+    double test_time = RunBenchmark(root, network_throughput, TestSerialize, TestDeserialize, TestFreeSerializeBuf, "test");
+    double baseline_time = RunBenchmark(root, network_throughput, BaselineSerialize, BaselineDeserialize, BaselineFreeSerializeBuf, "baseline");
     double speedup = test_time / baseline_time;
     cout << "Throughput " << network_throughput << " MB/s: speedup " << speedup << endl;
     return speedup;
