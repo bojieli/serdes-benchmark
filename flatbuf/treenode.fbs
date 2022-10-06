@@ -1,0 +1,10 @@
+namespace FlatBufTest;
+ 
+table FBTreeNode {
+  key : int64;
+  value : string;
+  left : FBTreeNode;
+  right : FBTreeNode;
+}
+ 
+root_type FBTreeNode;
