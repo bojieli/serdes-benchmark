@@ -1,2 +1,4 @@
 protobuf/*.pb.*
 flatbuf/*_generated.h
+*.o
+benchmark

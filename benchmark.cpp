@@ -71,8 +71,8 @@ void FreeTree(TreeNode *root)
 }
 
 double RunBenchmark(const TreeNode *root, uint32_t network_throughput,
-    (void)(SerializeFunc *)(uint32_t network_throughput, const TreeNode *root, void **buf, uint32_t *serialize_size),
-    (TreeNode *)(DeserializeFunc *)(uint32_t network_throughput, void *buf, uint32_t serialize_size),
+    (void)(SerializeFunc *)(uint32_t network_throughput, const TreeNode *root, const void **buf, uint32_t *serialize_size),
+    (TreeNode *)(DeserializeFunc *)(uint32_t network_throughput, const void *buf, uint32_t serialize_size),
     (void)(FreeSerializeBufFunc *)(void *buf, uint32_t serialize_size),
     const char *test_name)
 {

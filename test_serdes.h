@@ -1,4 +1,4 @@
-#ifdef __TEST_SERDES_H__
+#ifndef __TEST_SERDES_H__
 #define __TEST_SERDES_H__
 
 #include "benchmark.h"

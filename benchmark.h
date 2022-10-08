@@ -2,9 +2,9 @@
 #define __BENCHMARK_H__
 
 #include <string>
+#include <cstdint>
 
-class TreeNode {
-  public:
+struct TreeNode {
     int64_t key;
     std::string value;
     TreeNode *left;
