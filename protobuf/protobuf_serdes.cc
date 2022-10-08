@@ -1,8 +1,9 @@
-#include <string>
 #include "treenode.pb.h"
+#include "protobuf_serdes.h"
+
 using namespace std;
 
-void TreeToProtoBuf(baseline::treenode* protobuf, const TreeNode *root)
+static void TreeToProtoBuf(baseline::TreeNode* protobuf, const TreeNode *root)
 {
     protobuf->set_key(root->key);
     protobuf->set_value(root->value);
@@ -15,20 +16,20 @@ void TreeToProtoBuf(baseline::treenode* protobuf, const TreeNode *root)
     }
 }
 
-void TreeNodeSerialize(const TreeNode *root, std::string* output)
+void ProtoBufSerialize(const TreeNode *root, std::string* output)
 {
     // Verify that the version of the library that we linked against is
     // compatible with the version of the headers we compiled against.
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-    baseline::treenode protobuf;
+    baseline::TreeNode protobuf;
 
     TreeToProtoBuf(&protobuf, root);
 
     protobuf.SerializeToString(output);
 }
 
-TreeNode *ProtoBufToTree(const baseline::treenode& protobuf)
+static TreeNode *ProtoBufToTree(const baseline::TreeNode& protobuf)
 {
     TreeNode *root = new TreeNode();
     root->key = protobuf.key();
@@ -48,14 +49,13 @@ TreeNode *ProtoBufToTree(const baseline::treenode& protobuf)
     return root;
 }
 
-TreeNode *BaselineDeserialize(void *buf, uint32_t serialize_size)
+TreeNode *ProtoBufDeserialize(const std::string& serialized_data)
 {
     // Verify that the version of the library that we linked against is
     // compatible with the version of the headers we compiled against.
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-    baseline::treenode root;
-    std::string serialized_data(buf, serialize_size);
+    baseline::TreeNode root;
 
     root.ParseFromString(serialized_data);
 

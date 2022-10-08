@@ -1,8 +1,9 @@
 #include "treenode_generated.h"
+#include "flatbuf_serdes.h"
 
 using namespace FlatBufTest;
 
-flatbuffers::Offset<FBTreeNode> TestSerializeRecursive(FlatBufferBuilder* buffer, const TreeNode *root)
+static flatbuffers::Offset<FBTreeNode> SerializeRecursive(FlatBufferBuilder* buffer, const TreeNode *root)
 {
     FBTreeNodeBuilder builder(buffer);
     if (root->left) {
@@ -16,18 +17,18 @@ flatbuffers::Offset<FBTreeNode> TestSerializeRecursive(FlatBufferBuilder* buffer
     return builder.Finish();
 }
 
-void TestSerialize(const TreeNode *root, void **buf, uint32_t *serialize_size)
+void FlatBufSerialize(const TreeNode *root, const void **buf, uint32_t *serialize_size)
 {
     flatbuffers::FlatBufferBuilder builder;
 
-    TestSerializeRecursive(&builder, root);
+    SerializeRecursive(&builder, root);
     builder->Finish();
 
     *buf = builder.GetBufferPointer();
     *serialize_size = builder.GetSize();
 }
 
-TreeNode *TestDeserializeRecursive(FBTreeNode *root)
+static TreeNode *DeserializeRecursive(FBTreeNode *root)
 {
     TreeNode *node = new TreeNode();
     node->key = root->key();
@@ -46,13 +47,13 @@ TreeNode *TestDeserializeRecursive(FBTreeNode *root)
     return node;
 }
 
-TreeNode *TestDeserialize(void *buf, uint32_t serialize_size)
+TreeNode *FlatBufDeserialize(const void *buf, uint32_t serialize_size)
 {
     FBTreeNode *root = GetFBTreeNode(buf);
     TreeNode *node = TestDeserializeRecursive(root);
     return node;
 }
 
-void TestFreeSerializeBuf(void *buf, uint32_t serialize_size)
+void FlatBufFreeSerializeBuf(const void *buf, uint32_t serialize_size)
 {
 }
