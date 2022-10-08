@@ -1,21 +1,34 @@
 CXX=g++
-CFLAGS=-g -O2
+CFLAGS=-g -O2 -I.
 PROTOC=protoc
 FLATC=flatc
-FLATBUF_LIB=-lflatbuf
 PROTOBUF_LIB=-lprotobuf
 
-benchmark: test_serdes.o baseline_serdes.o protobuf.o flatbuf.o
-	$(CXX) $(CFLAGS) -o $@ $*
+benchmark: benchmark.o test_serdes.o baseline_serdes.o protobuf.o protobuf_serdes.o flatbuf_serdes.o
+	$(CXX) $(CFLAGS) -o $@ $* $(PROTOBUF_LIB)
+
+benchmark.o: benchmark.cpp
 
 test_serdes.o: test_serdes.cpp
 
 baseline_serdes.o: baseline_serdes.cpp
 
-protobuf.o: protobuf/treenode.proto protobuf/protobuf_serdes.cc
-	cd protobuf && $(PROTOC) --cpp_out=. treenode.proto
-	$(CXX) $(CFLAGS) -o $@ protobuf/protobuf_serdes.cc protobuf/treenode.pb.cc $(PROTOBUF_LIB)
+protobuf.o: protobuf
+	$(CXX) $(CFLAGS) -c -o $@ protobuf/treenode.pb.cc
 
-flatbuf: flatbuf/treenode.fbs flatbuf/flatbuf_serdes.cpp
+protobuf_serdes.o: protobuf protobuf/protobuf_serdes.cc
+	$(CXX) $(CFLAGS) -c -o $@ protobuf/protobuf_serdes.cc 
+
+protobuf: protobuf/treenode.proto
+	cd protobuf && $(PROTOC) --cpp_out=. treenode.proto
+
+flatbuf_serdes.o: flatbuf flatbuf/flatbuf_serdes.cpp
+	$(CXX) $(CFLAGS) -c -o $@ flatbuf/flatbuf_serdes.cpp
+
+flatbuf: flatbuf/treenode.fbs
 	cd flatbuf && $(FLATC) -c treenode.fbs
-	$(CXX) $(CFLAGS) -o $@ flatbuf/flatbuf_serdes.cpp $(FLATBUF_LIB)
+
+.PHONY: clean
+
+clean:
+	rm -rf benchmark *.o */*.o

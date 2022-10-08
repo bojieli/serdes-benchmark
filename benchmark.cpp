@@ -26,14 +26,14 @@ TreeNode *GenRandomTree(uint32_t size)
     curr->key = rand();
     curr->value = rand_str();
 
-    left_size = rand() % size;
+    uint32_t left_size = rand() % size;
     if (left_size > 0) {
         curr->left = GenRandomTree(left_size);
     } else {
         curr->left = NULL;
     }
 
-    right_size = size - left_size - 1;
+    uint32_t right_size = size - left_size - 1;
     if (right_size > 0) {
         curr->right = GenRandomTree(right_size);
     } else {
@@ -71,20 +71,20 @@ void FreeTree(TreeNode *root)
 }
 
 double RunBenchmark(const TreeNode *root, uint32_t network_throughput,
-    (void)(SerializeFunc *)(uint32_t network_throughput, const TreeNode *root, const void **buf, uint32_t *serialize_size),
-    (TreeNode *)(DeserializeFunc *)(uint32_t network_throughput, const void *buf, uint32_t serialize_size),
-    (void)(FreeSerializeBufFunc *)(void *buf, uint32_t serialize_size),
+    void (*SerializeFunc)(uint32_t network_throughput, const TreeNode *root, void **buf, uint32_t *serialize_size),
+    TreeNode *(*DeserializeFunc)(uint32_t network_throughput, const void *buf, uint32_t serialize_size),
+    void (*FreeSerializeBufFunc)(void *buf, uint32_t serialize_size),
     const char *test_name)
 {
     auto start = chrono::steady_clock::now();
 
     uint32_t serialize_size = 0;
     void *serialize_buf = NULL;
-    SerializeFunc(root, &buf, &serialize_size);
+    SerializeFunc(network_throughput, root, &serialize_buf, &serialize_size);
 
     auto middle = chrono::steady_clock::now();
 
-    TreeNode *new_root = DeserializeFunc(buf, serialize_size);
+    TreeNode *new_root = DeserializeFunc(network_throughput, serialize_buf, serialize_size);
 
     auto end = chrono::steady_clock::now();
 
@@ -97,12 +97,12 @@ double RunBenchmark(const TreeNode *root, uint32_t network_throughput,
         cerr << "Test failed: serialized data is not equivalent to deserialized data" << endl;
         exit(1);
     }
-    FreeSerializeBufFunc(buf, serialize_size);
+    FreeSerializeBufFunc(serialize_buf, serialize_size);
     FreeTree(new_root);
 
-    cout << "Total " << test_name << " time is " << test_time << " us: "
+    cout << "Total " << test_name << " time is " << total_time << " us: "
          << "serialize " << serialize_time << " us, "
-         << "deserialize time " << serdes_time << " us, " 
+         << "deserialize time " << deserialize_time << " us, " 
          << "serialized data size is " << serialize_size << " bytes "
          << "(" << network_throughput << " MB/s, " << transmission_time << " us)" << endl;
     return total_time;

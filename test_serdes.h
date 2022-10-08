@@ -22,7 +22,7 @@ void TestSerialize(uint32_t network_throughput, const TreeNode *root, void **buf
  *
  * Return value: root of the tree after deserialization
  */
-TreeNode *TestDeserialize(uint32_t network_throughput, void *buf, uint32_t serialize_size);
+TreeNode *TestDeserialize(uint32_t network_throughput, const void *buf, uint32_t serialize_size);
 
 /**
  * TestFreeSerializeBuf: free serialization buffer after test
