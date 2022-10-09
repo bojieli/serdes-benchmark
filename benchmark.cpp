@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 
     TreeNode *root = GenRandomTree(size);
 
-    const uint32_t network_throughputs = {10, 100, 1000, 10000}; // MB/s
+    const uint32_t network_throughputs[] = {10, 100, 1000, 10000}; // MB/s
     const int num_cases = sizeof(network_throughputs) / sizeof(uint32_t);
     double total_speedup = 0;
     for (int i = 0; i < num_cases; ++i) {

@@ -3,7 +3,7 @@
 
 #include "benchmark.h"
 
-void FlatBufSerialize(const TreeNode *root, const void **buf, uint32_t *serialize_size);
+void FlatBufSerialize(const TreeNode *root, void **buf, uint32_t *serialize_size);
 TreeNode *FlatBufDeserialize(const void *buf, uint32_t serialize_size);
 void FlatBufFreeSerializeBuf(void *buf, uint32_t serialize_size);
 

@@ -1,4 +1,4 @@
-#ifdef __BASELINE_SERDES_H__
+#ifndef __BASELINE_SERDES_H__
 #define __BASELINE_SERDES_H__
 
 #include "benchmark.h"

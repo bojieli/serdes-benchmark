@@ -4,7 +4,7 @@
 /**
  * Please replace this function to the serialization function of yours.
  */
-void TestSerialize(uint32_t network_throughput, const TreeNode *root, const void **buf, uint32_t *serialize_size)
+void TestSerialize(uint32_t network_throughput, const TreeNode *root, void **buf, uint32_t *serialize_size)
 {
     FlatBufSerialize(root, buf, serialize_size);
 }

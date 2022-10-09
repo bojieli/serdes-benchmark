@@ -6,12 +6,12 @@ std::string *global_serialized_string = NULL;
 /**
  * This function performs serialization using Protocol Buffers.
  */
-void BaselineSerialize(uint32_t network_throughput, const TreeNode *root, const void **buf, uint32_t *serialize_size)
+void BaselineSerialize(uint32_t network_throughput, const TreeNode *root, void **buf, uint32_t *serialize_size)
 {
     std::string *output = new std::string();
     ProtoBufSerialize(root, output);
 
-    *buf = output->c_str();
+    *buf = (void *)output->c_str(); // discard constness
     *serialize_size = output->size();
     global_serialized_string = output;
 }

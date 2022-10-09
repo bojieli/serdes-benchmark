@@ -18,7 +18,7 @@ static flatbuffers::Offset<FBTreeNode> SerializeRecursive(FlatBufferBuilder& buf
     return builder.Finish();
 }
 
-void FlatBufSerialize(const TreeNode *root, const void **buf, uint32_t *serialize_size)
+void FlatBufSerialize(const TreeNode *root, void **buf, uint32_t *serialize_size)
 {
     flatbuffers::FlatBufferBuilder builder;
 
@@ -54,6 +54,6 @@ TreeNode *FlatBufDeserialize(const void *buf, uint32_t serialize_size)
     return node;
 }
 
-void FlatBufFreeSerializeBuf(const void *buf, uint32_t serialize_size)
+void FlatBufFreeSerializeBuf(void *buf, uint32_t serialize_size)
 {
 }
