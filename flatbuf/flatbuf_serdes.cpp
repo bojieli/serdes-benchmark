@@ -1,28 +1,40 @@
 #include "treenode_generated.h"
 #include "flatbuf_serdes.h"
+#include <iostream>
 
 using namespace FlatBufTest;
 using namespace flatbuffers;
 
-static flatbuffers::Offset<FBTreeNode> SerializeRecursive(FlatBufferBuilder& buffer, const TreeNode *root)
+static Offset<FBTreeNode> SerializeRecursive(FlatBufferBuilder& buffer, const TreeNode *root)
 {
-    FBTreeNodeBuilder builder(buffer);
+    Offset<FBTreeNode> left, right;
     if (root->left) {
-        builder.add_left(SerializeRecursive(buffer, root->left));
+        left = SerializeRecursive(buffer, root->left);
     }
     if (root->right) {
-        builder.add_right(SerializeRecursive(buffer, root->right));
+        right = SerializeRecursive(buffer, root->right);
+    }
+    Offset<String> value = buffer.CreateString(root->value);
+
+    // all FlatBuffer objects must be created before the root object
+    FBTreeNodeBuilder builder(buffer);
+    if (root->left) {
+        builder.add_left(left);
+    }
+    if (root->right) {
+        builder.add_right(right);
     }
     builder.add_key(root->key);
-    builder.add_value(buffer.CreateString(root->value));
+    builder.add_value(value);
     return builder.Finish();
 }
 
 void FlatBufSerialize(const TreeNode *root, void **buf, uint32_t *serialize_size)
 {
-    flatbuffers::FlatBufferBuilder builder;
+    FlatBufferBuilder builder;
 
-    SerializeRecursive(builder, root);
+    Offset<FBTreeNode> serialized_root = SerializeRecursive(builder, root);
+    builder.Finish(serialized_root);
 
     *buf = builder.GetBufferPointer();
     *serialize_size = builder.GetSize();
@@ -31,6 +43,11 @@ void FlatBufSerialize(const TreeNode *root, void **buf, uint32_t *serialize_size
 static TreeNode *DeserializeRecursive(const FBTreeNode *root)
 {
     TreeNode *node = new TreeNode();
+    if (node == NULL) {
+        std::cerr << "Failed to allocate TreeNode" << std::endl;
+        exit(1);
+    }
+
     node->key = root->key();
     node->value = root->value()->str();
 
