@@ -29,15 +29,18 @@ static Offset<FBTreeNode> SerializeRecursive(FlatBufferBuilder& buffer, const Tr
     return builder.Finish();
 }
 
+static FlatBufferBuilder *global_builder = NULL;
+
 void FlatBufSerialize(const TreeNode *root, void **buf, uint32_t *serialize_size)
 {
-    FlatBufferBuilder builder;
+    FlatBufferBuilder *builder = new FlatBufferBuilder();
 
-    Offset<FBTreeNode> serialized_root = SerializeRecursive(builder, root);
-    builder.Finish(serialized_root);
+    Offset<FBTreeNode> serialized_root = SerializeRecursive(*builder, root);
+    builder->Finish(serialized_root);
 
-    *buf = builder.GetBufferPointer();
-    *serialize_size = builder.GetSize();
+    *buf = builder->GetBufferPointer();
+    *serialize_size = builder->GetSize();
+    global_builder = builder;
 }
 
 static TreeNode *DeserializeRecursive(const FBTreeNode *root)
@@ -73,4 +76,10 @@ TreeNode *FlatBufDeserialize(const void *buf, uint32_t serialize_size)
 
 void FlatBufFreeSerializeBuf(void *buf, uint32_t serialize_size)
 {
+    if (global_builder) {
+        if (global_builder->GetBufferPointer() == buf && global_builder->GetSize() == serialize_size) {
+            delete global_builder;
+            global_builder = NULL;
+        }
+    }
 }
