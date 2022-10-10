@@ -26,12 +26,20 @@ void ProtoBufSerialize(const TreeNode *root, std::string* output)
 
     TreeToProtoBuf(&protobuf, root);
 
-    protobuf.SerializeToString(output);
+    if (!protobuf.SerializeToString(output)) {
+        cerr << "Failed to serialize protobuf to string" << endl;
+        exit(1);
+    }
 }
 
 static TreeNode *ProtoBufToTree(const baseline::TreeNode& protobuf)
 {
     TreeNode *root = new TreeNode();
+    if (root == NULL) {
+        cerr << "Failed to allocate TreeNode" << endl;
+        exit(1);
+    }
+
     root->key = protobuf.key();
     root->value = protobuf.value();
 
@@ -57,7 +65,10 @@ TreeNode *ProtoBufDeserialize(const std::string& serialized_data)
 
     baseline::TreeNode root;
 
-    root.ParseFromString(serialized_data);
+    if (!root.ParseFromString(serialized_data)) {
+        cerr << "Failed to deserialize string to protobuf" << endl;
+        exit(1);
+    }
 
     return ProtoBufToTree(root);
 }

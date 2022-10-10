@@ -104,14 +104,14 @@ double RunBenchmark(const TreeNode *root, uint32_t network_throughput,
          << "serialize " << serialize_time << " us, "
          << "deserialize time " << deserialize_time << " us, " 
          << "serialized data size is " << serialize_size << " bytes "
-         << "(" << network_throughput << " MB/s, " << transmission_time << " us)" << endl;
+         << "(emulate " << network_throughput << " MB/s, " << transmission_time << " us)" << endl;
     return total_time;
 }
 
 double RunComparison(const TreeNode *root, uint32_t network_throughput)
 {
-    double test_time = RunBenchmark(root, network_throughput, TestSerialize, TestDeserialize, TestFreeSerializeBuf, "test");
     double baseline_time = RunBenchmark(root, network_throughput, BaselineSerialize, BaselineDeserialize, BaselineFreeSerializeBuf, "baseline");
+    double test_time = RunBenchmark(root, network_throughput, TestSerialize, TestDeserialize, TestFreeSerializeBuf, "test");
     double speedup = test_time / baseline_time;
     cout << "Throughput " << network_throughput << " MB/s: speedup " << speedup << endl;
     return speedup;
