@@ -112,7 +112,7 @@ double RunComparison(const TreeNode *root, uint32_t network_throughput)
 {
     double baseline_time = RunBenchmark(root, network_throughput, BaselineSerialize, BaselineDeserialize, BaselineFreeSerializeBuf, "baseline");
     double test_time = RunBenchmark(root, network_throughput, TestSerialize, TestDeserialize, TestFreeSerializeBuf, "test");
-    double speedup = test_time / baseline_time;
+    double speedup = baseline_time / test_time;
     cout << "Throughput " << network_throughput << " MB/s: speedup " << speedup << endl;
     return speedup;
 }
