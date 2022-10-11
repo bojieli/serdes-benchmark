@@ -2,7 +2,7 @@
 
 This is a simple benchmark of serialization and deserialization (serdes).
 
-The benchmark uses a tree data structure for serdes, where each node in the tree contains four fields: an integer key, a string value, an optional left node, and an optional right node.
+The benchmark uses a tree data structure for serdes, where each node in the tree contains four fields: an integer key, a string value, an optional left node, and an optional right node. The structure of the tree is randomly generated. The key and value of each node are also randomly generated with some contraints.
 
 The famous serialization framework, Protocol Buffers, uses variable-length encoding for serializing integers to reduce the length of serialized string and TLV (type-length-value) to achieve backward/forward compatibility. These increases the CPU time required for serialization. However, under high-performance networks, transferring a larger amount of data is faster than compressing the data during serialization.
 
