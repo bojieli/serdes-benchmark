@@ -10,10 +10,10 @@ We compare serialization frameworks by emulating four representative network ban
 
 * 10 MB/s: typical 5G cellular upload speed, 4G cellular download speed
 * 100 MB/s: typical 5G cellular download speed, Wi-Fi 4 (802.11n) wireless local network speed
-* 1000 MB/s: Wi-Fi 5/6 (802.11ac/n) wireless local network speed, typical datacenter network speed, Flash storage bandwidth
+* 1000 MB/s: Wi-Fi 5/6 (802.11ac/ax) wireless local network speed, typical datacenter network speed, Flash storage bandwidth
 * 10000 MB/s: high-speed datacenter network speed (e.g., RDMA), non-volatile memory bandwidth
 
-The benchmark is written in C++, where serialization transforms a tree to a buffer, and deserialization transforms a buffer to a tree. The resulting tree must be identical with the tree before serialization.
+The benchmark is written in C++, where serialization transforms a tree to a buffer, and deserialization transforms a buffer to a tree. The resulting tree must be identical with the tree before serialization. Although the benchmark runs in a single process and the network transmission is emulated, the serializer and deserializer should assume that they runs on different hosts.
 
 The baseline is Protocol Buffers. We also provide a reference implementation for testing, which utilizes Flat Buffers for serialization and LZ4 for compression under low network bandwidth. Flat Buffers trades off serialized data size for serialization CPU time. The reference implementation is only a hint to show the potential benefits of the trade-off. You are expected to replace the reference test implementation with your own serialization and deserialization algorithm.
 
