@@ -11,7 +11,7 @@ using namespace std::chrono;
 
 std::string rand_str()
 {
-    const uint32_t max_strlen = 100;
+    const uint32_t max_strlen = 256;
     uint32_t length = rand() % max_strlen;
     std::string rand_str;
     for (uint32_t i = 0; i < length; ++i) {

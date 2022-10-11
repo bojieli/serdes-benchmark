@@ -17,7 +17,8 @@ void CompressData(void **buf, uint32_t *size)
 
 void DecompressData(const void **buf, uint32_t *size)
 {
-    uint32_t decompressed_max_size = *size * 10;
+    uint32_t max_compression_ratio = 5; // assume that the compression ratio will not exceed it
+    uint32_t decompressed_max_size = *size * max_compression_ratio;
     void *decompressed_buf = malloc(decompressed_max_size);
     if (decompressed_buf == NULL) {
         std::cerr << "Failed to allocate decompression buffer: " << decompressed_max_size << " bytes" << std::endl;
