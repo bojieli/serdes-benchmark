@@ -21,9 +21,9 @@ The baseline is Protocol Buffers. We also provide a reference implementation for
 
 Dependencies:
 
-* Protocol Buffers (protobuf)
-* Flat Buffers (flatbuf)
-* lz4
+* Protocol Buffers (protobuf) [Official Website](https://developers.google.com/protocol-buffers) [GitHub Releases](https://github.com/protocolbuffers/protobuf/releases)
+* Flat Buffers (flatbuf) [Official Website](https://google.github.io/flatbuffers/) [GitHub Releases](https://github.com/google/flatbuffers/releases)
+* lz4 [GitHub Releases](https://github.com/lz4/lz4/releases)
 
 You also need `make` and `g++` to build the project.
 
@@ -31,7 +31,11 @@ To install the dependencies on Ubuntu or Debian, please use:
 
 ```apt install build-essential protobuf-compiler libprotobuf-dev flatbuffers-compiler libflatbuffers-dev liblz4-dev```
 
-If you find some of the packages are missing, you can download the source code Protocol Buffers, Flat Buffers, and LZ4 from their official repository and build them from scratch.
+To install the dependencies on CentOS, please use: (Flat Buffers is not an official package in CentOS, please build from source.)
+
+```yum install make gcc gcc-c++ protobuf-compiler protobuf-devel lz4-devel```
+
+If you find some of the packages are missing, you can download the source code Protocol Buffers, Flat Buffers, and LZ4 from their official repository (see above) and build them from scratch.
 
 Note that Protocol Buffers and Flat Buffers include both a compiler and a library. The compiler generates C++ code from the IDL (schema). LZ4 is only a library.
 
