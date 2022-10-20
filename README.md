@@ -41,6 +41,11 @@ Note that Protocol Buffers and Flat Buffers include both a compiler and a librar
 
 After installing the dependencies, run `make` to build the project.
 
+### Troubleshooting in Build Process
+
+* ```Unrecognized syntax identifier "proto3".  This parser only recognizes "proto2".``` The Protocol Buffers version is too old. Please download the latest Protocol Buffers release and build from source.
+* ```undefined reference to google::protobuf::xxx```  This is because libprotobuf is not found. Please check whether libprotobuf.so is in one of the paths in environment variable LD_LIBARY_PATH.
+
 ## Run the Benchmark
 
 ```./benchmark```
