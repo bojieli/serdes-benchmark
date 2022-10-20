@@ -22,7 +22,7 @@ The baseline is Protocol Buffers. We also provide a reference implementation for
 Dependencies:
 
 * Protocol Buffers (protobuf). [Official Website.](https://developers.google.com/protocol-buffers) [GitHub Releases.](https://github.com/protocolbuffers/protobuf/releases)
-* Flat Buffers (flatbuf). [Official Website.](https://google.github.io/flatbuffers/) [GitHub Releases.](https://github.com/google/flatbuffers/releases)
+* Flat Buffers (flatbuf). [Official Website.](https://google.github.io/flatbuffers/) [GitHub Releases.](https://github.com/google/flatbuffers/releases) [Build Instructions.](https://google.github.io/flatbuffers/flatbuffers_guide_building.html)
 * lz4. [GitHub Releases.](https://github.com/lz4/lz4/releases)
 
 You also need `make` and `g++` to build the project.
@@ -44,7 +44,7 @@ After installing the dependencies, run `make` to build the project.
 ### Troubleshooting in Build Process
 
 * ```Unrecognized syntax identifier "proto3".  This parser only recognizes "proto2".``` The Protocol Buffers version is too old. Please download the latest Protocol Buffers release and build from source.
-* ```undefined reference to google::protobuf::xxx```  This is because libprotobuf is not found. Please check whether libprotobuf.so is in one of the paths in environment variable LD_LIBARY_PATH.
+* ```undefined reference to google::protobuf::xxx```  This is because libprotobuf.so is not found in the system library path.
 
 ## Run the Benchmark
 
