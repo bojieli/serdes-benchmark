@@ -21,9 +21,9 @@ The baseline is Protocol Buffers. We also provide a reference implementation for
 
 Dependencies:
 
-* Protocol Buffers (protobuf) [Official Website](https://developers.google.com/protocol-buffers) [GitHub Releases](https://github.com/protocolbuffers/protobuf/releases)
-* Flat Buffers (flatbuf) [Official Website](https://google.github.io/flatbuffers/) [GitHub Releases](https://github.com/google/flatbuffers/releases)
-* lz4 [GitHub Releases](https://github.com/lz4/lz4/releases)
+* Protocol Buffers (protobuf). [Official Website.](https://developers.google.com/protocol-buffers) [GitHub Releases.](https://github.com/protocolbuffers/protobuf/releases)
+* Flat Buffers (flatbuf). [Official Website.](https://google.github.io/flatbuffers/) [GitHub Releases.](https://github.com/google/flatbuffers/releases)
+* lz4. [GitHub Releases.](https://github.com/lz4/lz4/releases)
 
 You also need `make` and `g++` to build the project.
 
@@ -70,7 +70,7 @@ Currently, the benchmark requires about 1.5 GB of physical memory because there 
 
 ## Use Your Own Serialization
 
-Modify `test_serdes.cpp` and replace the serialization and deserialization functions.
+**Modify `test_serdes.cpp` and replace the serialization and deserialization functions.**
 
 If you need to use other libraries, please update the Makefile accordingly.
 
